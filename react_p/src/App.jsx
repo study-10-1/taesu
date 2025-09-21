@@ -1,17 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// App.js
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import CreatePost from "./pages/CreatePost";
+import PostDetail from "./pages/PostDetail";
+import PostEdit from "./pages/PostEdit";
 
 function App() {
-
-  return (
-    <>
-      <div className="App">
-
-      </div>
-    </>
-  )
+    return (
+        <Router>
+            <div className="App">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/create" element={<CreatePost />} />
+                    <Route path="/post/:id" element={<PostDetail />} />
+                    <Route path="/post/edit/:id" element={<PostEdit />} />
+                </Routes>
+            </div>
+        </Router>
+    );
 }
 
-export default App
+export default App;
