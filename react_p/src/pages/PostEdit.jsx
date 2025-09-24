@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import '../css/edit.css';
+import api from '../apiClient';
 
 function PostEdit() {
     const { id } = useParams();
@@ -12,14 +13,26 @@ function PostEdit() {
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        setTitle(`${id}번째 게시글 제목`);
-        setContent(`${id}번째 게시글의 상세 내용입니다.`);
+        const fetchPost = async () => {
+            try {
+                const res = await api.get(`/posts/${id}`);
+                setTitle(res.data.title);
+                setContent(res.data.content);
+            } catch (e) {
+                alert('불러오기 실패');
+            }
+        };
+        fetchPost();
     }, [id]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert('게시글이 수정되었습니다.');
-        navigate(`/post/${id}`);
+        try {
+            await api.put(`/posts/${id}`, { title, content });
+            navigate(`/post/${id}`);
+        } catch (e) {
+            alert('수정 실패');
+        }
     };
 
     return (
